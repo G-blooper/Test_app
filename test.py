@@ -6,15 +6,16 @@ import pytz  # requirements.txt に pytz を追加してください
 
 # ==== ログ関連のユーティリティ ====
 
+logs_dir = "logs"
+log_path = os.path.join(logs_dir, "app_log.txt")
+
 def write_log(event_text: str):
     """
     logs/ ディレクトリと app_log.txt を用意し、
     event_text を1行追記する。
     """
-    logs_dir = "logs"
     os.makedirs(logs_dir, exist_ok=True)
 
-    log_path = os.path.join(logs_dir, "app_log.txt")
 
     # タイムゾーンは日本時間(Asia/Tokyo)で記録
     tz = pytz.timezone("Asia/Tokyo")
