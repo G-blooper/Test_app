@@ -49,3 +49,17 @@ if st.button('コードを表示'):
         st.code(string_data, language='java')
     else:
         st.warning("ファイルが選択されていません。")
+
+if os.path.exists(log_path):
+    st.subheader("現在のログ（このインスタンス上）")
+    with open(LOCAL_LOG_FILE, "r", encoding="utf-8") as f:
+        log_text = f.read()
+
+    st.download_button(
+        "ログをダウンロード",
+        data=log_text,
+        file_name="app_log.txt",
+        mime="text/plain",
+    )
+else:
+    st.info("まだローカルログはありません。")
