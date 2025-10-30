@@ -24,7 +24,7 @@ def write_log(event_text: str):
 
     with open(log_path, "a", encoding="utf-8") as f:
         f.write(line)
-        st.download_button("ログをダウンロード", data=f.read())
+        #st.download_button("ログをダウンロード", data=f.read())
 
 
 # ==== アプリ本体 ====
