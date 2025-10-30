@@ -102,9 +102,6 @@ def append_line_to_repo_log(owner: str, repo: str, path: str, event_text: str):
 st.title("Javaコード表示アプリ（GitHub永続ログ版）")
 
 # セッションごとに1回だけアクセスログを残す
-if "visited_logged" not in st.session_state:
-    append_line_to_repo_log(REPO_OWNER, REPO_NAME, REMOTE_LOG_PATH, "accessed app")
-    st.session_state["visited_logged"] = True
 
 uploaded_file = st.file_uploader('Javaファイルをアップロード', type='java')
 
