@@ -7,6 +7,7 @@ import base64
 import requests
 
 # ========== 初期設定 ==========
+"""REPO_OWNER: アカウント名, REPO_NAME: リポジトリ名"""
 GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
 REPO_OWNER = st.secrets["REPO_OWNER"]
 REPO_NAME  = st.secrets["REPO_NAME"]
@@ -17,7 +18,6 @@ USER_FILE_PATH = "users.json"
 
 LOG_DIR = "logs"
 
-#%Y%m%d_%H%M%S
 def timestamp_jst_iso():
     """日本時間(Asia/Tokyo)の現在時刻を返す"""
     tz = pytz.timezone("Asia/Tokyo")
