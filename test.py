@@ -7,7 +7,7 @@ import base64
 import requests
 
 # ========== 初期設定 ==========
-"""REPO_OWNER: アカウント名, REPO_NAME: リポジトリ名"""
+##REPO_OWNER: アカウント名, REPO_NAME: リポジトリ名
 GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
 REPO_OWNER = st.secrets["REPO_OWNER"]
 REPO_NAME  = st.secrets["REPO_NAME"]
