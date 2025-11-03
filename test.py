@@ -2,7 +2,7 @@ import streamlit as st
 #import os
 import json
 from datetime import datetime
-#import pytz
+import pytz
 import base64
 import requests
 
@@ -16,6 +16,11 @@ GITHUB_API_BASE = "https://api.github.com"
 USER_FILE_PATH = "users.json"
 
 LOG_DIR = "logs"
+
+def timestamp_jst_iso():
+    """日本時間(Asia/Tokyo)の現在時刻を ISO8601 文字列で返す"""
+    tz = pytz.timezone("Asia/Tokyo")
+    return datetime.now(tz).isoformat(timespec="seconds")
 
 # ========== GitHub 連携 ==========
 def get_github_file(owner: str, repo: str, path: str):
@@ -53,7 +58,7 @@ def append_line_to_repo_log(owner: str, repo: str, path: str, event_text: str):
     新規ファイルの場合は、新しく作る。
     """
     # 1行分を "event_text" の形式で整える
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"{event_text}"
 
     existing = get_github_file(owner, repo, path)
@@ -79,7 +84,7 @@ def append_line_to_repo_log(owner: str, repo: str, path: str, event_text: str):
         "Content-Type": "application/json",
     }
     payload = {
-        "message": f"Append log at {now}",
+        "message": f"Append log at {timestamp_jst_iso()}",
         "content": b64_updated,
     }
     if sha:
@@ -130,7 +135,7 @@ def save_users(users: dict, commit_message: str):
     }
     #now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     payload = {
-        "message": f"{commit_message} at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}",
+        "message": f"{commit_message} at {timestamp_jst_iso()}",
         "content": b64_updated,
     }
     if sha:
@@ -161,8 +166,7 @@ def login_page():
             st.session_state.page = "main"
             st.session_state.user_id = id_input
             remote_log_path = LOG_DIR + "/IDlogin.txt"
-            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, f"[{now}] ログイン: {id_input}")
+            append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, f"[{timestamp_jst_iso()}] ログイン: {id_input}")
             st.success(f"{id_input} さん、ようこそ！")
             st.rerun()
         else:
@@ -199,8 +203,7 @@ def main_page():
     st.sidebar.write(f"👤 ログイン中: {st.session_state.user_id}")
     if st.sidebar.button("ログアウト"):
         remote_log_path = remote_log_path = LOG_DIR + "/IDlogin.txt"
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, f"[{now}] ログアウト: {st.session_state.user_id}")
+        append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, f"[{timestamp_jst_iso()}] ログアウト: {st.session_state.user_id}")
         st.session_state.page = "login"
         st.session_state.user_id = None
         st.warning("ログアウトしました。")
@@ -228,7 +231,7 @@ def main_page():
             test_names = [t.name for t in testcase] if testcase else []
 
             # ファイル名と選択条件をログに記録
-            remote_log_path = LOG_DIR + f"/log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            remote_log_path = LOG_DIR + f"/log_{timestamp_jst_iso()}.txt"
             msg = f"[ユーザー]: {st.session_state.user_id}\n"
             msg += f"[日時]: {datetime.now()}\n"
             msg += "=== 入力情報 ===\n"
