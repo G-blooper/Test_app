@@ -18,9 +18,10 @@ USER_FILE_PATH = "users.json"
 LOG_DIR = "logs"
 
 def timestamp_jst_iso():
-    """日本時間(Asia/Tokyo)の現在時刻を ISO8601 文字列で返す"""
+    """日本時間(Asia/Tokyo)の現在時刻を返す"""
     tz = pytz.timezone("Asia/Tokyo")
-    return datetime.now(tz).isoformat(timespec="seconds")
+    now = datetime.now(tz)
+    return now.strftime("%Y-%m-%d %H:%M:%S")
 
 # ========== GitHub 連携 ==========
 def get_github_file(owner: str, repo: str, path: str):
