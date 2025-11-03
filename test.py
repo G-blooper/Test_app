@@ -17,11 +17,18 @@ USER_FILE_PATH = "users.json"
 
 LOG_DIR = "logs"
 
+#%Y%m%d_%H%M%S
 def timestamp_jst_iso():
     """日本時間(Asia/Tokyo)の現在時刻を返す"""
     tz = pytz.timezone("Asia/Tokyo")
     now = datetime.now(tz)
     return now.strftime("%Y-%m-%d %H:%M:%S")
+
+def filename_timestamp_jst_iso():
+    """日本時間(Asia/Tokyo)の現在時刻を返す"""
+    tz = pytz.timezone("Asia/Tokyo")
+    now = datetime.now(tz)
+    return now.strftime("%Y%m%d_%H%M%S")
 
 # ========== GitHub 連携 ==========
 def get_github_file(owner: str, repo: str, path: str):
@@ -232,7 +239,7 @@ def main_page():
             test_names = [t.name for t in testcase] if testcase else []
 
             # ファイル名と選択条件をログに記録
-            remote_log_path = LOG_DIR + f"/log_{timestamp_jst_iso()}.txt"
+            remote_log_path = LOG_DIR + f"/log_{filename_timestamp_jst_iso()}.txt"
             msg = f"[ユーザー]: {st.session_state.user_id}\n"
             msg += f"[日時]: {datetime.now()}\n"
             msg += "=== 入力情報 ===\n"
