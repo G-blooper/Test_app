@@ -255,9 +255,9 @@ def main_page():
             append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, text)
 
             st.success("アップロード情報をログに記録しました！")
-            path = os.path.join(LOG_DIR, "IDlogin.txt")
-            st.info(f"保存先: {path}")
-            st.info(f"保存先: {remote_log_path}")
+            path = os.path.join(LOG_DIR, f"log_{filename_timestamp_jst_iso()}.txt")
+            st.info(f"保存: {path}")
+            #st.info(f"保存先: {remote_log_path}")
 
 # ========== ページ遷移制御 ==========
 if st.session_state.page == "login":
