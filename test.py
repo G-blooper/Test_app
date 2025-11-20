@@ -247,7 +247,7 @@ def main_page():
             text += "=== 入力情報 ===\n"
             text += f"[プログラムファイル]: {', '.join(program_names)}\n"
             text += f"[テストファイル]: {', '.join(test_names) or 'なし'}\n"
-            text += f"[PEM]: {', '.join(pem_names) or 'なし'}\n"
+            text += f"PEM: {', '.join(pem_names) or 'なし'}\n"
             text += f"[テスト有無]: {test_opt}\n"
             text += f"[エラー数指定]: {error_opt}\n"
             text += f"[解説レベル]: {level_opt}\n"
@@ -255,8 +255,6 @@ def main_page():
             append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, text)
 
             st.success("アップロード情報をログに記録しました！")
-            #path = os.path.join(LOG_DIR, f"log_{filename_timestamp_jst_iso()}.txt")
-            #st.info(f"保存: {path}")
             st.info(f"保存先: {remote_log_path}")
 
 # ========== ページ遷移制御 ==========
