@@ -7,7 +7,6 @@ import base64
 import requests
 
 # ========== 初期設定 ==========
-##REPO_OWNER: アカウント名, REPO_NAME: リポジトリ名
 GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
 REPO_OWNER = st.secrets["REPO_OWNER"]
 REPO_NAME  = st.secrets["REPO_NAME"]
@@ -18,6 +17,7 @@ USER_FILE_PATH = "users.json"
 
 LOG_DIR = "logs"
 
+#####%Y%m%d_%H%M%S
 def timestamp_jst_iso():
     """日本時間(Asia/Tokyo)の現在時刻を返す"""
     tz = pytz.timezone("Asia/Tokyo")
@@ -223,6 +223,7 @@ def main_page():
     st.header("① ファイルをアップロード")
     program = st.file_uploader("Javaプログラム（.java）をアップロード", type=["java"], accept_multiple_files=True)
     testcase = st.file_uploader("テストケース（任意）", type=["java"], accept_multiple_files=True)
+    pem = st.file_uploader("PEMファイル（任意）をアップロード", type=["txt"], accept_multiple_files=True)
 
     # --- 条件選択 ---
     st.header("② 条件を選択")
@@ -237,22 +238,24 @@ def main_page():
         else:
             program_names = [p.name for p in program]
             test_names = [t.name for t in testcase] if testcase else []
+            pem_names = [pe.name for pe in pem] if pem else []
 
             # ファイル名と選択条件をログに記録
             remote_log_path = LOG_DIR + f"/log_{filename_timestamp_jst_iso()}.txt"
-            msg = f"[ユーザー]: {st.session_state.user_id}\n"
-            msg += f"[日時]: {datetime.now()}\n"
-            msg += "=== 入力情報 ===\n"
-            msg += f"[プログラムファイル]: {', '.join(program_names)}\n"
-            msg += f"[テストファイル]: {', '.join(test_names) or 'なし'}\n"
-            msg += f"[テスト有無]: {test_opt}\n"
-            msg += f"[エラー数指定]: {error_opt}\n"
-            msg += f"[解説レベル]: {level_opt}\n"
+            text = f"[ユーザー]: {st.session_state.user_id}\n"
+            text += f"[日時]: {timestamp_jst_iso()}\n"
+            text += "=== 入力情報 ===\n"
+            text += f"[プログラムファイル]: {', '.join(program_names)}\n"
+            text += f"[テストファイル]: {', '.join(test_names) or 'なし'}\n"
+            text += f"PEM: {', '.join(pem_names) or 'なし'}\n"
+            text += f"[テスト有無]: {test_opt}\n"
+            text += f"[エラー数指定]: {error_opt}\n"
+            text += f"[解説レベル]: {level_opt}\n"
             
-            append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, msg)
+            append_line_to_repo_log(REPO_OWNER, REPO_NAME, remote_log_path, text)
 
             st.success("アップロード情報をログに記録しました！")
-            #st.info(f"保存先: {log_path}")
+            st.info(f"保存先: {remote_log_path}")
 
 # ========== ページ遷移制御 ==========
 if st.session_state.page == "login":
