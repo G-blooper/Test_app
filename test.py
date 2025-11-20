@@ -257,7 +257,7 @@ def main_page():
             st.success("アップロード情報をログに記録しました！")
             path = os.path.join(LOG_DIR, "IDlogin.txt")
             st.info(f"保存先: {path}")
-            #st.info(f"保存先: {remote_log_path}")
+            st.info(f"保存先: {remote_log_path}")
 
 # ========== ページ遷移制御 ==========
 if st.session_state.page == "login":
