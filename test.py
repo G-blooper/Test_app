@@ -296,7 +296,8 @@ def main_page():
                 result = response.choices[0].message.content
                 st.success(" AIの解析が完了しました！")
                 st.subheader("④ AIの解析結果")
-                st.code(result, language="markdown", wrap_lines=True)
+                #st.code(result, language="markdown", wrap_lines=True)
+                st.markdown(result)
 
                 # --- ログ記録（解析結果も） ---
                 program_names = [p.name for p in program]
